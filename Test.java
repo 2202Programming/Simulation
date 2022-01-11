@@ -28,15 +28,15 @@ public class Test {
         int totalWins = 0;
 
         for (int i = 0; i < NUM_GAMES; i++) {
-            System.out.println("Game #" + (i + 1) + ": ");
+            System.out.print("Game #" + (i + 1) + ": ");
             Game game = new Game(blueAlliance);
             totalRPs += game.getBlueAllianceRPs();
             totalPoints += game.getBlueAlliancePoints();
-            System.out.println("Red Alliance: Points: " + game.getRedAlliancePoints() + ", Ranking Points: "
+            System.out.print("Red Points: " + game.getRedAlliancePoints() + "; RPs: "
                     + game.getRedAllianceRPs());
-            System.out.println("Blue Alliance: Points: " + game.getBlueAlliancePoints() + ", Ranking Points: "
+            System.out.print(" | Blue Points: " + game.getBlueAlliancePoints() + "; RPs: "
                     + game.getBlueAllianceRPs());
-            System.out.println("WINNER: " + game.winner());
+            System.out.println(" | WINNER: " + game.winner());
             if (game.winner() == "Blue Alliance") {
                 totalWins++;
             }

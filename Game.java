@@ -36,10 +36,10 @@ public class Game {
         if (numGen.nextInt(2) == 1) {
             shootLowTele = true;
         }
-        double autoAccuracy = numGen.nextInt(101) / 100; // percentage
-        double teleAccuracy = numGen.nextInt(101) / 100;
-        int secondsPerCycleAuto = numGen.nextInt(8) + 3;
-        int secondsPerCycleTele = numGen.nextInt(8) + 3;
+        double autoAccuracy = (Constants.MIN_RANDOM_AUTO_ACCURACY + numGen.nextInt(Constants.MAX_RANDOM_AUTO_ACCURACY-Constants.MIN_RANDOM_AUTO_ACCURACY)) / 100; // percentage
+        double teleAccuracy = (Constants.MIN_RANDOM_TELE_ACCURACY + numGen.nextInt(Constants.MAX_RANDOM_TELE_ACCURACY-Constants.MIN_RANDOM_TELE_ACCURACY)) / 100;
+        int secondsPerCycleAuto = Constants.MIN_RANDOM_AUTO_CYCLE + numGen.nextInt(Constants.MAX_RANDOM_AUTO_CYCLE-Constants.MIN_RANDOM_AUTO_CYCLE);
+        int secondsPerCycleTele = Constants.MIN_RANDOM_TELE_CYCLE + numGen.nextInt(Constants.MAX_RANDOM_TELE_CYCLE-Constants.MIN_RANDOM_TELE_CYCLE);
         int hangPoints = 0;
         switch (numGen.nextInt(5)) {
             case 0:
