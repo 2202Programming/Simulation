@@ -2,13 +2,13 @@ import java.util.Scanner;
 
 public class Robot {
 
-    boolean shootLowAuto = true;
+    boolean shootLowAuto = false;
     boolean shootLowTele = false;
-    double autoAccuracy = 0.5; // percentage
-    double teleAccuracy = 0.5;
-    int secondsPerCycleAuto = 5;
-    int secondsPerCycleTele = 10;
-    int hangPoints = 6;
+    double autoAccuracy = 0.3; // percentage
+    double teleAccuracy = 0.3;
+    int secondsPerCycleAuto = 12;
+    int secondsPerCycleTele = 20;
+    int hangPoints = 4;
     int hangTime = 30; // in seconds
 
     public Robot() {
