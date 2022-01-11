@@ -22,11 +22,11 @@ public class Game {
     static public Robot randomizeRobot() {
         Random numGen = new Random();
         boolean shootLowAuto = false;
-        if (numGen.nextInt(2) == 1) {
+        if (numGen.nextDouble() < Constants.CHANCE_LOW_AUTO) {
             shootLowAuto = true;
         }
         boolean shootLowTele = false;
-        if (numGen.nextInt(2) == 1) {
+        if (numGen.nextDouble() < Constants.CHANCE_LOW_TELE) {
             shootLowTele = true;
         }
         double autoAccuracy = (Constants.MIN_RANDOM_AUTO_ACCURACY + numGen.nextInt(Constants.MAX_RANDOM_AUTO_ACCURACY-Constants.MIN_RANDOM_AUTO_ACCURACY)) / 100; // percentage
@@ -51,7 +51,7 @@ public class Game {
                 hangPoints = 15;
                 break;
         }
-        int hangTime = numGen.nextInt(16) + 15; // in seconds
+        int hangTime = Constants.MIN_RANDOM_HANGTIME + numGen.nextInt(Constants.MAX_RANDOM_HANGTIME); // in seconds
 
         Robot robot = new Robot(shootLowAuto, shootLowTele, autoAccuracy, teleAccuracy, secondsPerCycleAuto,
                 secondsPerCycleTele, hangPoints, hangTime);

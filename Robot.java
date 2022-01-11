@@ -9,7 +9,7 @@ public class Robot {
     int secondsPerCycleAuto = 5;
     int secondsPerCycleTele = 10;
     int hangPoints = 6;
-    int hangTime = 15; // in seconds
+    int hangTime = 30; // in seconds
 
     public Robot() {
         // prompt user here
