@@ -38,7 +38,6 @@ public class Robot {
             System.out.println("How many seconds will it take for your robot to hang? (integer)");
             hangTime = input.nextInt();
         }
-        input.close();
     }
 
     public Robot(boolean shootLowAuto, boolean shootLowTele, double autoAccuracy, double teleAccuracy,

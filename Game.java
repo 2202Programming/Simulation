@@ -6,27 +6,20 @@ public class Game {
     // generate random robots based on difficulty distribution
 
     ArrayList<Robot> blueAlliance; // Our team
-    ArrayList<Robot> redAlliance = new ArrayList<Robot>(); // Opposing team
+    ArrayList<Robot> redAlliance; // Opposing team
     int redPoints;
     int bluePoints;
     int redRPoints;
     int blueRPoints;
 
-    public Game(ArrayList<Robot> blueAlliance) {
+    public Game(ArrayList<Robot> blueAlliance, ArrayList<Robot> redAlliance) {
         this.blueAlliance = blueAlliance;
-        int teamSize = blueAlliance.size();
-        for (int i = 0; i < 3 - teamSize; i++) {
-            blueAlliance.add(randomizeRobot());
-        }
-
-        for (int i = 0; i < 3; i++) {
-            redAlliance.add(randomizeRobot());
-        }
+        this.redAlliance = redAlliance;
     }
 
     // always randomize opponents, ask how many alliacne memebers to assign values
     // to
-    public Robot randomizeRobot() {
+    static public Robot randomizeRobot() {
         Random numGen = new Random();
         boolean shootLowAuto = false;
         if (numGen.nextInt(2) == 1) {
