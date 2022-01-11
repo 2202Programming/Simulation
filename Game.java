@@ -1,70 +1,173 @@
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Game {
     // give everything a difficulty
     // generate random robots based on difficulty distribution
 
-    public Game() {
-
-    }
-
-    Scanner input = new Scanner(System.in);
-    ArrayList<Robot> blueAlliance = new ArrayList<Robot>(); // Our team
+    ArrayList<Robot> blueAlliance; // Our team
     ArrayList<Robot> redAlliance = new ArrayList<Robot>(); // Opposing team
+    int redPoints;
+    int bluePoints;
+    int redRPoints;
+    int blueRPoints;
 
-    boolean shootHigh;
-    boolean shootLow;
-    int cyclesPerGame;
-    int hangPoints;
+    public Game(ArrayList<Robot> blueAlliance) {
+        this.blueAlliance = blueAlliance;
+        int teamSize = blueAlliance.size();
+        for (int i = 0; i < 3 - teamSize; i++) {
+            blueAlliance.add(randomizeRobot());
+        }
 
-    Robot myRobot = new Robot();blueAlliance.add(myRobot);
-
-    // fill opponent team
-    for(
-    int i = 0;i<3;i++)
-    {
-        redAlliance.add(randomizeRobot());
-    }
-
-    System.out.println("How many non-random alliance members?");
-    int nonRandom = input.nextInt();
-
-    for(
-    int i = 0;i<nonRandom;i++)
-    {
-        blueAlliance.add(new Robot());
-    }
-
-    for(
-    int i = 2 - nonRandom;i>0;i--)
-    {
-        blueAlliance.add(randomizeRobot());
-    }
-
-    public void newGame() {
-        int redPoints;
-        int bluePoints;
-        int redRPoints;
-        int blueRPoints;
-        // return points and balls in auto/telly
+        for (int i = 0; i < 3; i++) {
+            redAlliance.add(randomizeRobot());
+        }
     }
 
     // always randomize opponents, ask how many alliacne memebers to assign values
     // to
     public Robot randomizeRobot() {
         Random numGen = new Random();
-        boolean shootHigh = false;
-        boolean shootLow = false;
-        int cyclesPerGame = 0;
-        int hangPoints = 0;
-
-        for (int i = 0; i < 4; i++) {
-
+        boolean shootLowAuto = false;
+        if (numGen.nextInt(2) == 1) {
+            shootLowAuto = true;
         }
+        boolean shootLowTele = false;
+        if (numGen.nextInt(2) == 1) {
+            shootLowTele = true;
+        }
+        double autoAccuracy = numGen.nextInt(101) / 100; // percentage
+        double teleAccuracy = numGen.nextInt(101) / 100;
+        int secondsPerCycleAuto = numGen.nextInt(8) + 3;
+        int secondsPerCycleTele = numGen.nextInt(8) + 3;
+        int hangPoints = 0;
+        switch (numGen.nextInt(5)) {
+            case 0:
+                hangPoints = 0;
+                break;
+            case 1:
+                hangPoints = 4;
+                break;
+            case 2:
+                hangPoints = 6;
+                break;
+            case 3:
+                hangPoints = 10;
+                break;
+            case 4:
+                hangPoints = 15;
+                break;
+        }
+        int hangTime = numGen.nextInt(16) + 15; // in seconds
 
-        Robot robot = new Robot(shootHigh, shootLow, cyclesPerGame, hangPoints);
+        Robot robot = new Robot(shootLowAuto, shootLowTele, autoAccuracy, teleAccuracy, secondsPerCycleAuto,
+                secondsPerCycleTele, hangPoints, hangTime);
         return robot;
     }
+
+    public int getBlueAlliancePoints() {
+        int totalPoints = 0;
+        for (Robot robot : blueAlliance) {
+            totalPoints += robot.pointsScored();
+        }
+        return totalPoints;
+    }
+
+    public int getRedAlliancePoints() {
+        int totalPoints = 0;
+        for (Robot robot : redAlliance) {
+            totalPoints += robot.pointsScored();
+        }
+        return totalPoints;
+    }
+
+    public int getBlueAllianceRPs() {
+        int totalPoints = 0;
+        if (getBlueAlliancePoints() > getRedAlliancePoints()) {
+            totalPoints = 2;
+        } else if (getRedAlliancePoints() == getBlueAlliancePoints()) {
+            totalPoints = 1;
+        }
+
+        int totalHangPoints = 0;
+        for (Robot robot : blueAlliance) {
+            totalHangPoints += robot.getHangPoints();
+        }
+        if (totalHangPoints >= 16) {
+            totalPoints += 1;
+        }
+
+        int totalBallsScored = 0;
+        for (Robot robot : blueAlliance) {
+            totalBallsScored += robot.teleopBallsScored();
+            totalBallsScored += robot.autoBallsScored();
+        }
+
+        if (quintet(blueAlliance)) {
+            if (totalBallsScored >= 18) {
+                totalPoints += 1;
+            }
+        } else {
+            if (totalBallsScored >= 20) {
+                totalPoints += 1;
+            }
+        }
+
+        return totalPoints;
+    }
+
+    public int getRedAllianceRPs() {
+        int totalPoints = 0;
+        if (getRedAlliancePoints() > getBlueAlliancePoints()) {
+            totalPoints = 2;
+        } else if (getRedAlliancePoints() == getBlueAlliancePoints()) {
+            totalPoints = 1;
+        }
+
+        int totalHangPoints = 0;
+        for (Robot robot : redAlliance) {
+            totalHangPoints += robot.getHangPoints();
+        }
+        if (totalHangPoints >= 16) {
+            totalPoints += 1;
+        }
+
+        int totalBallsScored = 0;
+        for (Robot robot : redAlliance) {
+            totalBallsScored += robot.teleopBallsScored();
+            totalBallsScored += robot.autoBallsScored();
+        }
+
+        if (quintet(redAlliance)) {
+            if (totalBallsScored >= 18) {
+                totalPoints += 1;
+            }
+        } else {
+            if (totalBallsScored >= 20) {
+                totalPoints += 1;
+            }
+        }
+
+        return totalPoints;
+    }
+
+    public String winner() {
+        String winner = "Blue Alliance";
+        if (getRedAlliancePoints() > getBlueAlliancePoints()) {
+            winner = "Red Alliance";
+        } else if (getRedAlliancePoints() == getBlueAlliancePoints()) {
+            winner = "Tie";
+        }
+        return winner;
+    }
+
+    public boolean quintet(ArrayList<Robot> alliance) {
+        int totalBallsScored = 0;
+        for (Robot robot : alliance) {
+            totalBallsScored += robot.autoBallsScored();
+        }
+
+        return (totalBallsScored >= 5);
+    }
+
 }
